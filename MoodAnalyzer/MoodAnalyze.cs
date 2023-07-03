@@ -7,7 +7,11 @@
         {
             this.message = message;
         }
-        public string AnalyzeMood(string message)
+        public MoodAnalyze() 
+        {
+            message = "";
+        }
+        public string AnalyzeMood()
         {
             if (message.Contains("sad"))
                 return "SAD";
