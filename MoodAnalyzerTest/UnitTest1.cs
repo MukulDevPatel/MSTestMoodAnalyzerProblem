@@ -29,5 +29,21 @@ namespace MoodAnalyzerTest
             string result = analyze.AnalyzeMood();
             Assert.AreEqual("HAPPY", result);
         }
+
+        [TestMethod]
+        public void GivenNullMood_WhenAnalyze_ShouldThrowMoodAnalysisException()
+        {
+            MoodAnalyze analyze = new MoodAnalyze(null);
+            string mood = analyze.AnalyzeMood();
+            Assert.AreEqual(MoodAnalysisError.NULL.ToString(),mood);
+        }
+
+        [TestMethod]
+        public void GivenEmptyMood_WhenAnalyze_ShouldThrowMoodAnalysisException()
+        {
+            MoodAnalyze analyze = new MoodAnalyze("");
+            string mood = analyze.AnalyzeMood();
+            Assert.AreEqual(MoodAnalysisError.EMPTY.ToString(), mood);
+        }
     }
 }

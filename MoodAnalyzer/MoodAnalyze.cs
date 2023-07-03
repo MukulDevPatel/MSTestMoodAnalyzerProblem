@@ -1,5 +1,10 @@
 ﻿namespace MoodAnalyzer
 {
+    public enum MoodAnalysisError
+    {
+        EMPTY,
+        NULL
+    }
     public class MoodAnalyze
     {
         private string message;
@@ -15,10 +20,16 @@
         {
             try
             {
-                //Check message should not be empty
+                //Check if message is null
+                if (message == null)
+                {
+                    throw new MoodAnalysisException(MoodAnalysisError.NULL.ToString());
+                }
+
+                //Check if message is empty
                 if (string.IsNullOrEmpty(message))
                 {
-                    throw new ArgumentNullException("message", "Mood can't be null or empty");
+                    throw new MoodAnalysisException(MoodAnalysisError.EMPTY.ToString());
                 }
 
                 //Pass the message sad or happy
@@ -29,10 +40,18 @@
                 else {
                     return "HAPPY"; 
                 }
-            }catch (ArgumentNullException)
+            }catch (MoodAnalysisException ex)
             {
-                return "HAPPY";
+                return ex.Message;
             }
+        }
+    }
+
+    public class MoodAnalysisException : Exception
+    {
+        public MoodAnalysisException (string message) : base(message)
+        {
+
         }
     }
 }
