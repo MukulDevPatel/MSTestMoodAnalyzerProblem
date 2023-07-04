@@ -45,5 +45,53 @@ namespace MoodAnalyzerTest
             string mood = analyze.AnalyzeMood();
             Assert.AreEqual(MoodAnalysisError.EMPTY.ToString(), mood);
         }
+
+        [TestMethod]
+        public void CreateMoodAnalyser_WithValidClassName_ReturnsMoodAnalyserObject()
+        {
+            // Arrange
+            MoodAnalyze expectedMoodAnalyser = new MoodAnalyze();
+
+            // Act
+            MoodAnalyze actualMoodAnalyser = MoodAnalyserFactory.CreateMoodAnalyser();
+                
+            // Assert
+            Assert.AreEqual(expectedMoodAnalyser, actualMoodAnalyser);
+        }
+
+        [TestMethod]
+        public void CreateMoodAnalyser_WithInvalidClassName_ThrowsMoodAnalysisException()
+        {
+            // Arrange, Act & Assert
+            Assert.ThrowsException<MoodAnalysisException>(() => MoodAnalyserFactory.CreateMoodAnalyser());
+        }
+
+        [TestMethod]
+        public void Equals_WithEqualObjects_ReturnsTrue()
+        {
+            // Arrange
+            MoodAnalyze moodAnalyser1 = new MoodAnalyze("I am in a Happy Mood");
+            MoodAnalyze moodAnalyser2 = new MoodAnalyze("I am in a Happy Mood");
+
+            // Act
+            bool result = moodAnalyser1.Equals(moodAnalyser2);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void Equals_WithDifferentObjects_ReturnsFalse()
+        {
+            // Arrange
+            MoodAnalyze moodAnalyser1 = new MoodAnalyze("I am in a Happy Mood");
+            MoodAnalyze moodAnalyser2 = new MoodAnalyze("I am in a Sad Mood");
+
+            // Act
+            bool result = moodAnalyser1.Equals(moodAnalyser2);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
     }
 }

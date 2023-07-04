@@ -1,4 +1,6 @@
-﻿namespace MoodAnalyzer
+﻿using System.Reflection;
+
+namespace MoodAnalyzer
 {
     public enum MoodAnalysisError
     {
@@ -20,12 +22,6 @@
         {
             try
             {
-                //Check if message is null
-                if (message == null)
-                {
-                    throw new MoodAnalysisException(MoodAnalysisError.NULL.ToString());
-                }
-
                 //Check if message is empty
                 if (string.IsNullOrEmpty(message))
                 {
@@ -43,6 +39,35 @@
             }catch (MoodAnalysisException ex)
             {
                 return ex.Message;
+            }
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            MoodAnalyze moodAnalyze = (MoodAnalyze)obj;
+            return message == moodAnalyze.message;
+        }
+    }
+    public class MoodAnalyserFactory
+    {
+        public static MoodAnalyze CreateMoodAnalyser()
+        {
+            try
+            {
+                Type moodAnalyserType = Type.GetType("MoodAnalyser");
+                MoodAnalyze moodAnalyser = (MoodAnalyze)Activator.CreateInstance(moodAnalyserType);
+                return moodAnalyser;
+            }
+            catch (TypeLoadException)
+            {
+                throw new MoodAnalysisException("No such class error");
+            }
+            catch (MissingMethodException)
+            {
+                throw new MoodAnalysisException("No such method error");
             }
         }
     }
